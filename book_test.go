@@ -1,14 +1,13 @@
 package melli
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestName(t *testing.T) {
 	tests := []struct {
-		url     string
-		expName string
+		url string
+		exp string
 	}{
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/636958",
@@ -34,11 +33,45 @@ func TestName(t *testing.T) {
 			t.Errorf("Test %d: Error on creating book from %s: %s",
 				i, test.url, err)
 		}
-		if name := book.Name(); name != test.expName {
-			fmt.Println(test.expName, []rune(test.expName))
-			fmt.Println(name, []rune(name))
+		if name := book.Name(); name != test.exp {
 			t.Errorf("Test %d: Expected book name '%s', but got '%s'",
-				i, test.expName, name)
+				i, test.exp, name)
+		}
+	}
+}
+
+func TestPublisher(t *testing.T) {
+	tests := []struct {
+		url string
+		exp string
+	}{
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/636958",
+			"ققنوس",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
+			"نقش و نگار",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
+			"آوند دانش",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5481844",
+			"مهر اندیش",
+		},
+	}
+
+	for i, test := range tests {
+		book, err := NewBook(test.url)
+		if err != nil {
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
+		}
+		if name := book.Publisher(); name != test.exp {
+			t.Errorf("Test %d: Expected book name '%s', but got '%s'",
+				i, test.exp, name)
 		}
 	}
 }

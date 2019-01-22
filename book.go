@@ -44,21 +44,46 @@ func (b *Book) Name() (name string) {
 	return
 }
 
+func (b *Book) Publisher() (publisher string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏مشخصات نشر" {
+			text := sel.Next().Next().Text()
+			publisher = b.publisherFromField(text)
+			return false
+		}
+		return true
+	})
+
+	return
+}
+
 func (b *Book) nameFromField(text string) string {
 	splited := strings.Split(text, "/")
 	name := splited[0]
-
-	// TODO what to do with nimfasele های
-	filter := func(r rune) rune {
-		switch r {
-		case 8205:
-			return -1
-		case 8204:
-			return -1
-		}
-		return r
-	}
 	name = strings.Map(filter, name)
 
-	return strings.Trim(name, " ")
+	return strings.TrimSpace(name)
+}
+
+func (b *Book) publisherFromField(text string) string {
+	splited := strings.Split(text, ":")
+	if len(splited) == 0 {
+		return ""
+	}
+	splited = strings.Split(splited[1], "،")
+	if len(splited) == 0 {
+		return ""
+	}
+	name := strings.Map(filter, splited[0])
+
+	return strings.TrimSpace(name)
+}
+
+func filter(r rune) rune {
+	// TODO what to do with nimfasele های
+	switch r {
+	case 8205, 8204, 8207, 8235, 8236:
+		return -1
+	}
+	return r
 }
