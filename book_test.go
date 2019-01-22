@@ -1,25 +1,43 @@
 package melli
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestName(t *testing.T) {
 	tests := []struct {
-		isbn    string
+		url     string
 		expName string
 	}{
-		{"9789643113445", "سمفونی مردگان"},
-		{"9789643114794", "تسلی بخشی‌های فلسفه"},
-		{"9789646235793", "ش‍غ‍ل‌ م‍ن‍اس‍ب‌ ش‍م‍ا: ب‍ا ت‍وج‍ه‌ ب‍ه‌ وی‍ژگ‍ی‌ه‍ای‌ ش‍خ‍ص‍ی‍ت‍ی‌ خ‍ود ک‍ارت‍ان‌ را ان‍ت‍خ‍اب‌ ک‍ن‍ی‍د ..."},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/636958",
+			"سمفونی مردگان",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
+			"شغل مناسب شما: با توجه به ویژگیهای شخصیتی خود کارتان را انتخاب کنید ...",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
+			"مدیریت اجرایی (For Dummies (MBA",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5481844",
+			"شدن",
+		},
 	}
 
 	for i, test := range tests {
-		book, err := NewBookByISBN(test.isbn)
+		book, err := NewBook(test.url)
 		if err != nil {
-			t.Errorf("Test %d: Error on creating book from isbn: %s",
-				i, err)
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
 		}
 		if name := book.Name(); name != test.expName {
-			t.Errorf("Test %d: Expected book name %s, but got %s",
+			fmt.Println(test.expName, []rune(test.expName))
+			fmt.Println(name, []rune(name))
+			t.Errorf("Test %d: Expected book name '%s', but got '%s'",
 				i, test.expName, name)
 		}
 	}
