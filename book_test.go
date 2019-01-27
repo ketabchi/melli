@@ -15,7 +15,7 @@ func TestName(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
-			"شغل مناسب شما: با توجه به ویژگیهای شخصیتی خود کارتان را انتخاب کنید ...",
+			"شغل مناسب شما: با توجه به ویژگی‌های شخصیتی خود کارتان را انتخاب کنید ...",
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
@@ -24,6 +24,10 @@ func TestName(t *testing.T) {
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5481844",
 			"شدن",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3049599",
+			"طلبه زیستن: پژوهشی مقدماتی در سنخ‌شناسی جامعه‌شناختی زیست‌طلبگی",
 		},
 	}
 
@@ -70,7 +74,7 @@ func TestPublisher(t *testing.T) {
 				i, test.url, err)
 		}
 		if name := book.Publisher(); name != test.exp {
-			t.Errorf("Test %d: Expected book name '%s', but got '%s'",
+			t.Errorf("Test %d: Expected publisher name '%s', but got '%s'",
 				i, test.exp, name)
 		}
 	}

@@ -59,10 +59,9 @@ func (b *Book) Publisher() (publisher string) {
 
 func (b *Book) nameFromField(text string) string {
 	splited := strings.Split(text, "/")
-	name := splited[0]
-	name = strings.Map(filter, name)
+	name := clean(splited[0])
 
-	return strings.TrimSpace(name)
+	return name
 }
 
 func (b *Book) publisherFromField(text string) string {
@@ -74,16 +73,24 @@ func (b *Book) publisherFromField(text string) string {
 	if len(splited) == 0 {
 		return ""
 	}
-	name := strings.Map(filter, splited[0])
+	name := clean(splited[0])
 
-	return strings.TrimSpace(name)
+	return name
 }
 
 func filter(r rune) rune {
 	// TODO what to do with nimfasele های
 	switch r {
-	case 8205, 8204, 8207, 8235, 8236:
+	case 8205, 8207, 8235, 8236:
 		return -1
 	}
 	return r
+}
+
+func clean(s string) string {
+	s = strings.Map(filter, s)
+	s = strings.Replace(s, "\u200C ", " ", -1)
+	s = strings.TrimSuffix(s, string('\u200C'))
+
+	return strings.TrimSpace(s)
 }
