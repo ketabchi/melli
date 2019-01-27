@@ -74,6 +74,8 @@ func (b *Book) publisherFromField(text string) string {
 		return ""
 	}
 	name := clean(splited[0])
+	name = strings.TrimPrefix(name, "نشر ")
+	name = strings.TrimPrefix(name, "انتشارات ")
 
 	return name
 }

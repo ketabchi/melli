@@ -69,6 +69,14 @@ func TestPublisher(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/5481844",
 			"مهر اندیش",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5355759",
+			"ثالث",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3382881",
+			"زعفران",
+		},
 	}
 
 	for i, test := range tests {
