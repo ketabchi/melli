@@ -90,6 +90,8 @@ func filter(r rune) rune {
 func clean(s string) string {
 	s = strings.Map(filter, s)
 	s = strings.Replace(s, "\u200C ", " ", -1)
+	s = strings.Replace(s, " : ", ": ", -1)
+	s = strings.Replace(s, " ...", "...", -1)
 	s = strings.TrimSuffix(s, string('\u200C'))
 
 	return strings.TrimSpace(s)

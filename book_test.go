@@ -15,7 +15,7 @@ func TestName(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
-			"شغل مناسب شما: با توجه به ویژگی‌های شخصیتی خود کارتان را انتخاب کنید ...",
+			"شغل مناسب شما: با توجه به ویژگی‌های شخصیتی خود کارتان را انتخاب کنید...",
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
@@ -28,6 +28,10 @@ func TestName(t *testing.T) {
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3049599",
 			"طلبه زیستن: پژوهشی مقدماتی در سنخ‌شناسی جامعه‌شناختی زیست‌طلبگی",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1070294",
+			"ارتباط رو در رو: کلید موفقیت برای مدیریت موثر و کارا مجموعه مقالاتی از دانشگاه هاروارد...",
 		},
 	}
 
