@@ -21,7 +21,7 @@ func GetBookURLByISBN(isbn string) (string, error) {
 
 	link, exists := doc.Find("#td2 > a").Attr("href")
 	if !exists {
-		return "", fmt.Errorf("can't find isbn %s book url in search page", isbn)
+		return "", fmt.Errorf("can't find book with %s isbn", isbn)
 	}
 
 	u, err := url.Parse(link)
