@@ -66,7 +66,7 @@ func (b *Book) nameFromField(text string) string {
 
 func (b *Book) publisherFromField(text string) string {
 	splited := strings.Split(text, ":")
-	if len(splited) == 0 {
+	if len(splited) < 2 {
 		return ""
 	}
 	splited = strings.Split(splited[1], "،")
