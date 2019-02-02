@@ -65,6 +65,7 @@ func (b *Book) nameFromField(text string) string {
 }
 
 func (b *Book) publisherFromField(text string) string {
+	text = strings.Replace(text, "٬", "،", -1)
 	splited := strings.Split(text, ":")
 	if len(splited) < 2 {
 		return ""
@@ -83,7 +84,7 @@ func (b *Book) publisherFromField(text string) string {
 func filter(r rune) rune {
 	// TODO what to do with nimfasele های
 	switch r {
-	case 8205, 8207, 8235, 8236:
+	case 8205, 8207, 8235, 8236, 8238:
 		return -1
 	}
 	return r

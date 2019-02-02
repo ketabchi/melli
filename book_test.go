@@ -77,6 +77,30 @@ func TestPublisher(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/3382881",
 			"زعفران",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5114665",
+			"موسسه فرهنگی هنری شهرستان ادب",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3729525",
+			"موسسه فرهنگی هنری شهرستان ادب",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4528181",
+			"نیماژ",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/511069",
+			"افق",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/2345835",
+			"افق",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/2891053",
+			"پرشیا شمع و مه",
+		},
 	}
 
 	for i, test := range tests {
@@ -86,6 +110,7 @@ func TestPublisher(t *testing.T) {
 				i, test.url, err)
 		}
 		if name := book.Publisher(); name != test.exp {
+			t.Logf("\n%q\n%q", test.exp, name)
 			t.Errorf("Test %d: Expected publisher name '%s', but got '%s'",
 				i, test.exp, name)
 		}
