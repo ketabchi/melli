@@ -120,3 +120,57 @@ func TestPublisher(t *testing.T) {
 		}
 	}
 }
+
+func TestAuthor(t *testing.T) {
+	tests := []struct {
+		url   string
+		name  string
+		eName string
+	}{
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5309538",
+			"گری نورثفیلد",
+			"Gary Northfield",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4929459",
+			"ریک ریوردان",
+			"Rick Riordan",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3649724",
+			"عفت‌السادات مرقاتی خویی",
+			"",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4834116",
+			"لیز پیشون",
+			"Liz Pichon",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3735689",
+			"زین‌الدین‌بن علی شهیدثانی",
+			"",
+		},
+	}
+
+	for i, test := range tests {
+		book, err := NewBook(test.url)
+		if err != nil {
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
+		}
+
+		name, eName := book.Author()
+		if name != test.name {
+			t.Logf("\n%q\n%q", test.name, name)
+			t.Errorf("Test %d: Expected author name '%s', but got '%s'",
+				i, test.name, name)
+		}
+		if eName != test.eName {
+			t.Logf("\n%q\n%q", test.eName, eName)
+			t.Errorf("Test %d: Expected author eName '%s', but got '%s'",
+				i, test.eName, eName)
+		}
+	}
+}

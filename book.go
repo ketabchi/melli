@@ -1,6 +1,7 @@
 package melli
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -44,6 +45,13 @@ func (b *Book) Name() (name string) {
 	return
 }
 
+func (b *Book) nameFromField(text string) string {
+	splited := strings.Split(text, "/")
+	name := clean(splited[0])
+
+	return name
+}
+
 func (b *Book) Publisher() (publisher string) {
 	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
 		if sel.Text() == "‏مشخصات نشر" {
@@ -55,13 +63,6 @@ func (b *Book) Publisher() (publisher string) {
 	})
 
 	return
-}
-
-func (b *Book) nameFromField(text string) string {
-	splited := strings.Split(text, "/")
-	name := clean(splited[0])
-
-	return name
 }
 
 func (b *Book) publisherFromField(text string) string {
@@ -82,21 +83,45 @@ func (b *Book) publisherFromField(text string) string {
 	return name
 }
 
-func filter(r rune) rune {
-	// TODO what to do with nimfasele های
-	switch r {
-	case 8205, 8207, 8235, 8236, 8238:
-		return -1
-	}
-	return r
+func (b *Book) Author() (name string, eName string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏سرشناسه" {
+			text := sel.Next().Next().Text()
+			splited := strings.Split(text, "\n")
+
+			name = b.authorFromField(splited[0])
+			if len(splited) > 1 {
+				eName = b.authorEnFromField(splited[1])
+			}
+			return false
+		}
+		return true
+	})
+
+	return
 }
 
-func clean(s string) string {
-	s = strings.Map(filter, s)
-	s = strings.Replace(s, "\u200C ", " ", -1)
-	s = strings.Replace(s, " : ", ": ", -1)
-	s = strings.Replace(s, " ...", "...", -1)
-	s = strings.TrimSuffix(s, string('\u200C'))
+func (b *Book) authorFromField(text string) string {
+	text = strings.Replace(text, "٬", "،", -1)
+	text = strings.Replace(text, "؛", "،", -1)
+	splited := strings.Split(text, "،")
 
-	return strings.TrimSpace(s)
+	return b.authorFullName(splited)
+}
+
+func (b *Book) authorEnFromField(text string) string {
+	splited := strings.Split(text, ",")
+
+	return b.authorFullName(splited)
+}
+
+func (b *Book) authorFullName(splited []string) string {
+	if len(splited) < 2 {
+		return ""
+	}
+	fn := clean(splited[1])
+	ln := clean(splited[0])
+	name := fmt.Sprintf("%s %s", fn, ln)
+
+	return name
 }
