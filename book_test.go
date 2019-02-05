@@ -152,6 +152,16 @@ func TestAuthor(t *testing.T) {
 			"زین‌الدین‌بن علی شهیدثانی",
 			"",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5120771",
+			"ویکتوریا ترنبول",
+			"Victoria Turnbull",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5373371",
+			"برایان تریسی",
+			"Brian Tracy",
+		},
 	}
 
 	for i, test := range tests {
