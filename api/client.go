@@ -11,8 +11,8 @@ import (
 var client *http.Client
 
 func GetBookURLByISBN(isbn string) (string, error) {
-	searchUrl := fmt.Sprintf("http://opac.nlai.ir/opac-prod/search/bibliographicSimpleSearchProcess.do?simpleSearch.value=%s&bibliographicLimitQueryBuilder.biblioDocType=BF&simpleSearch.indexFieldId=221091&command=I&simpleSearch.tokenized=true&classType=0", isbn)
-	doc, err := goquery.NewDocument(searchUrl)
+	searchURL := fmt.Sprintf("http://opac.nlai.ir/opac-prod/search/bibliographicSimpleSearchProcess.do?simpleSearch.value=%s&bibliographicLimitQueryBuilder.biblioDocType=BF&simpleSearch.indexFieldId=221091&command=I&simpleSearch.tokenized=true&classType=0", isbn)
+	doc, err := goquery.NewDocument(searchURL)
 	if err != nil {
 		return "", err
 	}
