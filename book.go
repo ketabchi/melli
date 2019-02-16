@@ -125,3 +125,23 @@ func (b *Book) authorFullName(splited []string) string {
 
 	return name
 }
+
+func (b *Book) OriginalName() (name string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏يادداشت" {
+			text := sel.Next().Next().Text()
+			if !strings.Contains(text, "عنوان اصلی:") {
+				return true
+			}
+
+			text = strings.Replace(text, "‏‫عنوان اصلی:", "", -1)
+			text = clean(text)
+			name = strings.Trim(text, ".")
+
+			return false
+		}
+		return true
+	})
+
+	return
+}

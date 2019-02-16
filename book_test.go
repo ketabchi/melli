@@ -184,3 +184,28 @@ func TestAuthor(t *testing.T) {
 		}
 	}
 }
+
+func TestOriginalName(t *testing.T) {
+	tests := []struct {
+		url string
+		exp string
+	}{
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5265395",
+			"The paradox of choice: why more is less",
+		},
+	}
+
+	for i, test := range tests {
+		book, err := NewBook(test.url)
+		if err != nil {
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
+		}
+		if name := book.OriginalName(); name != test.exp {
+			t.Logf("\n%q\n%q", test.exp, name)
+			t.Errorf("Test %d: Expected original name '%s', but got '%s'",
+				i, test.exp, name)
+		}
+	}
+}
