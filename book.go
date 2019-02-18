@@ -2,6 +2,7 @@ package melli
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -13,6 +14,8 @@ type Book struct {
 	url string
 	doc *goquery.Document
 }
+
+var re = regexp.MustCompile("\\[.*\\]")
 
 func NewBookByISBN(isbn string) (*Book, error) {
 	url, err := api.GetBookURLByISBN(isbn)
@@ -136,6 +139,9 @@ func (b *Book) OriginalName() (name string) {
 
 			text = strings.Replace(text, "‏‫عنوان اصلی:", "", -1)
 			text = clean(text)
+			text = strings.Replace(text, ",", "", -1)
+			text = re.ReplaceAllString(text, "")
+
 			name = strings.Trim(text, ".")
 
 			return false

@@ -194,6 +194,10 @@ func TestOriginalName(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/5265395",
 			"The paradox of choice: why more is less",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5363581",
+			"Lying",
+		},
 	}
 
 	for i, test := range tests {
