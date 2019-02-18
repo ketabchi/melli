@@ -8,6 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 
 	"github.com/ketabchi/melli/api"
+	"github.com/ketabchi/util"
 )
 
 type Book struct {
@@ -50,7 +51,7 @@ func (b *Book) Name() (name string) {
 
 func (b *Book) nameFromField(text string) string {
 	splited := strings.Split(text, "/")
-	name := clean(splited[0])
+	name := util.Clean(splited[0])
 
 	return name
 }
@@ -79,7 +80,7 @@ func (b *Book) publisherFromField(text string) string {
 	if len(splited) == 0 {
 		return ""
 	}
-	name := clean(splited[0])
+	name := util.Clean(splited[0])
 	name = strings.TrimPrefix(name, "نشر ")
 	name = strings.TrimPrefix(name, "انتشارات ")
 
@@ -122,8 +123,8 @@ func (b *Book) authorFullName(splited []string) string {
 	if len(splited) < 2 {
 		return ""
 	}
-	fn := clean(splited[1])
-	ln := clean(splited[0])
+	fn := util.Clean(splited[1])
+	ln := util.Clean(splited[0])
 	name := fmt.Sprintf("%s %s", fn, ln)
 
 	return name
@@ -138,7 +139,7 @@ func (b *Book) OriginalName() (name string) {
 			}
 
 			text = strings.Replace(text, "‏‫عنوان اصلی:", "", -1)
-			text = clean(text)
+			text = util.Clean(text)
 			text = strings.Replace(text, ",", "", -1)
 			text = re.ReplaceAllString(text, "")
 
