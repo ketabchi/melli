@@ -123,9 +123,9 @@ func TestPublisher(t *testing.T) {
 
 func TestAuthor(t *testing.T) {
 	tests := []struct {
-		url   string
-		name  string
-		eName string
+		url    string
+		faName string
+		enName string
 	}{
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5309538",
@@ -171,16 +171,16 @@ func TestAuthor(t *testing.T) {
 				i, test.url, err)
 		}
 
-		name, eName := book.Author()
-		if name != test.name {
-			t.Logf("\n%q\n%q", test.name, name)
-			t.Errorf("Test %d: Expected author name '%s', but got '%s'",
-				i, test.name, name)
+		faName, enName := book.Author()
+		if faName != test.faName {
+			t.Logf("\n%q\n%q", test.faName, faName)
+			t.Errorf("Test %d: Expected author faName '%s', but got '%s'",
+				i, test.faName, faName)
 		}
-		if eName != test.eName {
-			t.Logf("\n%q\n%q", test.eName, eName)
-			t.Errorf("Test %d: Expected author eName '%s', but got '%s'",
-				i, test.eName, eName)
+		if enName != test.enName {
+			t.Logf("\n%q\n%q", test.enName, enName)
+			t.Errorf("Test %d: Expected author enName '%s', but got '%s'",
+				i, test.enName, enName)
 		}
 	}
 }
