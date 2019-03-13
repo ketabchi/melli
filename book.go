@@ -16,7 +16,7 @@ type Book struct {
 	doc *goquery.Document
 }
 
-var re = regexp.MustCompile("\\[.*\\]")
+var reCleanPubDate = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
 
 func NewBookByISBN(isbn string) (*Book, error) {
 	url, err := api.GetBookURLByISBN(isbn)
@@ -138,10 +138,11 @@ func (b *Book) OriginalName() (name string) {
 				return true
 			}
 
-			text = strings.Replace(text, "‏‫عنوان اصلی:", "", -1)
+			text = strings.Replace(text, "عنوان اصلی:", "", -1)
 			text = util.Clean(text)
+			text = strings.Replace(text, "\u202d", "", -1)
+			text = reCleanPubDate.ReplaceAllString(text, "")
 			text = strings.Replace(text, ",", "", -1)
-			text = re.ReplaceAllString(text, "")
 
 			name = strings.Trim(text, ".")
 

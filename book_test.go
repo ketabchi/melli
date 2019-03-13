@@ -198,6 +198,26 @@ func TestOriginalName(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/5363581",
 			"Lying",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/2072242",
+			"Diary of a wimpy kid: Greg Heffley’s journal",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1092979",
+			"A thousand splendid suns",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4630184",
+			"Fahrenheit 451",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5481844",
+			"Becoming",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1929190",
+			"",
+		},
 	}
 
 	for i, test := range tests {
