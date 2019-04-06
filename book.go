@@ -17,6 +17,7 @@ type Book struct {
 }
 
 var cleanPubDateRe = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
+var cleanDoubleColon = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
 
 func NewBookByISBN(isbn string) (*Book, error) {
 	url, err := api.GetBookURLByISBN(isbn)
@@ -72,6 +73,7 @@ func (b *Book) Publisher() (publisher string) {
 func (b *Book) publisherFromField(text string) string {
 	text = strings.Replace(text, "٬", "،", -1)
 	text = strings.Replace(text, "؛", "،", -1)
+	text = cleanDoubleColon.ReplaceAllString(text, ":")
 	splited := strings.Split(text, ":")
 	if len(splited) < 2 {
 		return ""
