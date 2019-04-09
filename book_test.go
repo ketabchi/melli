@@ -245,3 +245,44 @@ func TestOriginalName(t *testing.T) {
 		}
 	}
 }
+
+func TestTranslator(t *testing.T) {
+	tests := []struct {
+		url string
+		exp string
+	}{
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5483716",
+			"ارسلان فصیحی",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3125961",
+			"محمدرضا طبیب‌زاده",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5174229",
+			"",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4315430",
+			"محمد عباس‌آبادی",
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3608346",
+			"آتوسا صالحی",
+		},
+	}
+
+	for i, test := range tests {
+		book, err := NewBook(test.url)
+		if err != nil {
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
+		}
+		if name := book.Translator(); name != test.exp {
+			t.Logf("\n%q\n%q", test.exp, name)
+			t.Errorf("Test %d: Expected translator '%s', but got '%s'",
+				i, test.exp, name)
+		}
+	}
+}

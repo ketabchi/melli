@@ -16,8 +16,12 @@ type Book struct {
 	doc *goquery.Document
 }
 
-var cleanPubDateRe = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
-var cleanDoubleColon = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
+var (
+	translatorRe = regexp.MustCompile("(?:(?:[\\[\\(])?(?:ترجمه(‌ی)?|مترجم)(?:[\\]\\)])?)(.+)\\.")
+
+	cleanPubDateRe     = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
+	cleanDoubleColonRe = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
+)
 
 func NewBookByISBN(isbn string) (*Book, error) {
 	url, err := api.GetBookURLByISBN(isbn)
@@ -73,7 +77,7 @@ func (b *Book) Publisher() (publisher string) {
 func (b *Book) publisherFromField(text string) string {
 	text = strings.Replace(text, "٬", "،", -1)
 	text = strings.Replace(text, "؛", "،", -1)
-	text = cleanDoubleColon.ReplaceAllString(text, ":")
+	text = cleanDoubleColonRe.ReplaceAllString(text, ":")
 	splited := strings.Split(text, ":")
 	if len(splited) < 2 {
 		return ""
@@ -155,4 +159,25 @@ func (b *Book) OriginalName() (name string) {
 	})
 
 	return
+}
+
+func (b *Book) Translator() (name string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏عنوان و نام پديدآور" {
+			text := sel.Next().Next().Text()
+			name = b.translatorFromField(text)
+			return false
+		}
+		return true
+	})
+
+	return
+}
+
+func (b *Book) translatorFromField(text string) string {
+	ss := translatorRe.FindStringSubmatch(text)
+	if len(ss) < 3 {
+		return ""
+	}
+	return util.Clean(ss[2])
 }
