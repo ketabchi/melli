@@ -289,6 +289,26 @@ func TestTranslator(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/3973224",
 			[]string{"عادل فردوسی‌پور", "بهزاد توکلی", "علی شهروز"},
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3393537",
+			[]string{"مسعود رایگان"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5259291",
+			[]string{"محمدامین رضایی", "فواد صبورنیا"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4392445",
+			[]string{"امیرحسین میرزائیان", "عبدالرضا شهبازی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5187277",
+			[]string{"آذر متين", "نيلوفر اعظمی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4427806",
+			[]string{"محمدعلی جعفری"},
+		},
 	}
 
 	for i, test := range tests {

@@ -17,7 +17,7 @@ type Book struct {
 }
 
 var (
-	translatorRe = regexp.MustCompile(`(?:(?:[\[\(])?(?:ترجمه(?:‌ی| و تنظیم)?|مترجم)(?:[\]\)])?)(.+?)(?:؛|\.|$)`)
+	translatorRe = regexp.MustCompile(`(?:(?:[\[\(])?(?:ترجمه(?:‌ی| و تنظیم| و (?:[\[\(])?گردآوری(?:[\]\)])?| و سرپرستی)?|مترجم(?:ان)?)(?:[\]\)])?)(.+?)(?:؛|\.|$)`)
 
 	cleanPubDateRe     = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
 	cleanDoubleColonRe = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
@@ -175,6 +175,9 @@ func (b *Book) Translators() []string {
 	return translators
 }
 
+// TODO: samples we can't currently parse:
+// http://opac.nlai.ir/opac-prod/bibliographic/3015099
+// http://opac.nlai.ir/opac-prod/bibliographic/4312607
 func (b *Book) translatorsFromField(text string) []string {
 	translators := make([]string, 0)
 	ss := translatorRe.FindStringSubmatch(text)
@@ -182,7 +185,13 @@ func (b *Book) translatorsFromField(text string) []string {
 		return translators
 	}
 
-	ss = strings.Split(ss[1], "،")
+	text = ss[1]
+	if strings.Contains(text, " و ") {
+		ss = strings.Split(ss[1], " و ")
+	} else {
+		ss = strings.Split(ss[1], "،")
+	}
+
 	for _, s := range ss {
 		s = util.Clean(s)
 		if len(s) != 0 {
