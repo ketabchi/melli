@@ -2,6 +2,8 @@ package melli
 
 import (
 	"testing"
+
+	"github.com/ketabchi/util"
 )
 
 func TestName(t *testing.T) {
@@ -249,27 +251,43 @@ func TestOriginalName(t *testing.T) {
 func TestTranslator(t *testing.T) {
 	tests := []struct {
 		url string
-		exp string
+		exp []string
 	}{
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5483716",
-			"ارسلان فصیحی",
+			[]string{"ارسلان فصیحی"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3125961",
-			"محمدرضا طبیب‌زاده",
+			[]string{"محمدرضا طبیب‌زاده"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5174229",
-			"",
+			[]string{},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4315430",
-			"محمد عباس‌آبادی",
+			[]string{"محمد عباس‌آبادی"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3608346",
-			"آتوسا صالحی",
+			[]string{"آتوسا صالحی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5112855",
+			[]string{"هدا نژادحسینیان"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4336045",
+			[]string{"پریسا صیادی", "سرور صیادی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3997499",
+			[]string{"فهیمه سیدناصری"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3973224",
+			[]string{"عادل فردوسی‌پور", "بهزاد توکلی", "علی شهروز"},
 		},
 	}
 
@@ -279,10 +297,9 @@ func TestTranslator(t *testing.T) {
 			t.Errorf("Test %d: Error on creating book from %s: %s",
 				i, test.url, err)
 		}
-		if name := book.Translator(); name != test.exp {
-			t.Logf("\n%q\n%q", test.exp, name)
-			t.Errorf("Test %d: Expected translator '%s', but got '%s'",
-				i, test.exp, name)
+		if translators := book.Translators(); !util.CheckSliceEq(translators, test.exp) {
+			t.Errorf("Test %d: Expected translators %q, but got %q",
+				i, test.exp, translators)
 		}
 	}
 }

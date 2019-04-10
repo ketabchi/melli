@@ -17,7 +17,7 @@ type Book struct {
 }
 
 var (
-	translatorRe = regexp.MustCompile("(?:(?:[\\[\\(])?(?:ترجمه(‌ی)?|مترجم)(?:[\\]\\)])?)(.+)\\.")
+	translatorRe = regexp.MustCompile(`(?:(?:[\[\(])?(?:ترجمه(?:‌ی| و تنظیم)?|مترجم)(?:[\]\)])?)(.+?)(?:؛|\.|$)`)
 
 	cleanPubDateRe     = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
 	cleanDoubleColonRe = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
@@ -161,23 +161,34 @@ func (b *Book) OriginalName() (name string) {
 	return
 }
 
-func (b *Book) Translator() (name string) {
+func (b *Book) Translators() []string {
+	translators := make([]string, 0)
 	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
 		if sel.Text() == "‏عنوان و نام پديدآور" {
 			text := sel.Next().Next().Text()
-			name = b.translatorFromField(text)
+			translators = b.translatorsFromField(text)
 			return false
 		}
 		return true
 	})
 
-	return
+	return translators
 }
 
-func (b *Book) translatorFromField(text string) string {
+func (b *Book) translatorsFromField(text string) []string {
+	translators := make([]string, 0)
 	ss := translatorRe.FindStringSubmatch(text)
-	if len(ss) < 3 {
-		return ""
+	if len(ss) < 2 {
+		return translators
 	}
-	return util.Clean(ss[2])
+
+	ss = strings.Split(ss[1], "،")
+	for _, s := range ss {
+		s = util.Clean(s)
+		if len(s) != 0 {
+			translators = append(translators, s)
+		}
+	}
+
+	return translators
 }
