@@ -309,6 +309,38 @@ func TestTranslator(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/4427806",
 			[]string{"محمدعلی جعفری"},
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5028775",
+			[]string{"فریبا شریفی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/969350",
+			[]string{"محمد عالمی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1557799",
+			[]string{"بهرام قاسمی‌نژاد"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5293382",
+			[]string{"فرزام کریمی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5451160",
+			[]string{"ایمان گنجی", "محدثه زارع"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5631247",
+			[]string{"احمد اخوت"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1126271",
+			[]string{"تارا سالک"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4788927",
+			[]string{"سارا طاهری", "علیرضا کوشکی‌جهرمی"},
+		},
 	}
 
 	for i, test := range tests {
