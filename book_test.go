@@ -44,6 +44,7 @@ func TestName(t *testing.T) {
 				i, test.url, err)
 		}
 		if name := book.Name(); name != test.exp {
+			t.Logf("\n%q\n%q", test.exp, name)
 			t.Errorf("Test %d: Expected book name '%s', but got '%s'",
 				i, test.exp, name)
 		}
