@@ -1,6 +1,7 @@
 package melli
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -17,16 +18,20 @@ type Book struct {
 }
 
 var (
-	translatorRe = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
-
+	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
 	cleanPubDateRe     = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
 	cleanDoubleColonRe = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
+
+	NoBookErr = errors.New("no book with this isbn")
 )
 
 func NewBookByISBN(isbn string) (*Book, error) {
 	url, err := api.GetBookURLByISBN(isbn)
 	if err != nil {
 		return nil, err
+	}
+	if url == "" {
+		return nil, NoBookErr
 	}
 
 	return NewBook(url)
