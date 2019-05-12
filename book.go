@@ -195,6 +195,7 @@ func (b *Book) translatorsFromField(text string) []string {
 
 	text = strings.Replace(ss[1], " و ", "،", -1)
 	text = strings.Replace(text, "٬", "،", -1)
+	text = strings.Replace(text, "؛", "،", -1)
 
 	ss = strings.Split(text, "،")
 
