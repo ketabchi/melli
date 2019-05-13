@@ -5,43 +5,43 @@ import "testing"
 func TestGetBookURLByISBN(t *testing.T) {
 	tests := []struct {
 		isbn  string
-		title string
+		title []string
 		exp   string
 	}{
 		{
 			"9789646235793",
-			"",
+			[]string{},
 			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
 		},
 		{
 			"9786008237631",
-			"",
+			[]string{},
 			"http://opac.nlai.ir/opac-prod/bibliographic/5134460",
 		},
 		{
 			"9786006860152",
-			"کودک باهوش(4سالگی)مهارت‌نوشتن(کتاب‌‌پرنده) #",
+			[]string{"کودک باهوش(4سالگی)مهارت‌نوشتن(کتاب‌‌پرنده) #"},
 			"http://opac.nlai.ir/opac-prod/bibliographic/4634555",
 		},
 		{
 			"9789642616763",
-			"ویتامین‎های موفقیت(نقش‎نگین)",
+			[]string{"ویتامین‎های موفقیت(نقش‎نگین)"},
 			"http://opac.nlai.ir/opac-prod/bibliographic/2055747",
 		},
 		{
 			"9786009639267",
-			"فرسنگ‌های نزدیک(کاویان‌کتاب)",
+			[]string{"فرسنگ‌های نزدیک(کاویان‌کتاب)"},
 			"",
 		},
 		{
 			"9786009686162",
-			"این من هستم(4ج،همراه‌کیف)لوپه‌تو #",
+			[]string{"این من هستم(4ج،همراه‌کیف)لوپه‌تو #"},
 			"",
 		},
 	}
 
 	for i, test := range tests {
-		url, err := GetBookURLByISBN(test.isbn, test.title)
+		url, err := GetBookURLByISBN(test.isbn, test.title...)
 		if err != nil {
 			t.Errorf("Test %d: Error on getting book url by %s isbn: %s",
 				i, test.isbn, err)

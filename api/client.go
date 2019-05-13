@@ -21,7 +21,7 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	}
 
 	link, exists := doc.Find("#td2 > a").Attr("href")
-	if len(args) > 0 && args[0] != "" {
+	if len(args) > 0 {
 		score := 0.0
 		exists = false
 		doc.Find("#td2 > a").Each(func(i int, sel *goquery.Selection) {
