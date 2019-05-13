@@ -25,8 +25,8 @@ var (
 	NoBookErr = errors.New("no book with this isbn")
 )
 
-func NewBookByISBN(isbn string) (*Book, error) {
-	url, err := api.GetBookURLByISBN(isbn)
+func NewBookByISBN(isbn string, args ...string) (*Book, error) {
+	url, err := api.GetBookURLByISBN(isbn, args...)
 	if err != nil {
 		return nil, err
 	}
