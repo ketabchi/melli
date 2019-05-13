@@ -19,8 +19,8 @@ type Book struct {
 
 var (
 	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
-	cleanPubDateRe     = regexp.MustCompile("(\\[.*\\]|[,.]\\s?c?\\d{4}.?$)")
-	cleanDoubleColonRe = regexp.MustCompile(":[\\s\\x{200f}\\x{202b}]+:")
+	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
+	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
 
 	NoBookErr = errors.New("no book with this isbn")
 )
@@ -156,7 +156,7 @@ func (b *Book) OriginalName() (name string) {
 			text = cleanPubDateRe.ReplaceAllString(text, "")
 			text = strings.Replace(text, ",", "", -1)
 
-			name = strings.Trim(text, ".")
+			name = strings.Trim(text, ".[] ")
 
 			return false
 		}

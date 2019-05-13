@@ -233,6 +233,10 @@ func TestOriginalName(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/5171490",
 			"Carta al General Franco",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4722298",
+			"Whispers in the walls",
+		},
 	}
 
 	for i, test := range tests {
