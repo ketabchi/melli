@@ -8,7 +8,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/antzucaro/matchr"
 	"github.com/ketabchi/util"
-	log "github.com/sirupsen/logrus"
 )
 
 var client *http.Client
@@ -32,9 +31,6 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 				score = tmp
 			}
 		})
-		if l, _ := doc.Find("#td2 > a").Attr("href"); link != l {
-			log.Infoln(isbn)
-		}
 	}
 
 	if !exists {
