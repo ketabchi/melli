@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/antzucaro/matchr"
@@ -23,10 +24,12 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	if len(args) > 0 {
 		score := 0.0
 		exists = false
+		arg := util.Clean(args[0])
 		doc.Find("#td2 > a").Each(func(i int, sel *goquery.Selection) {
-			tmp := matchr.SmithWaterman(args[0], util.Clean(sel.Text()))
-			tmp /= float64(len(args[0]))
-			if tmp > score && tmp > 0.1 {
+			title := util.Clean(sel.Text())
+			tmp := matchr.SmithWaterman(arg, title)
+			tmp /= float64(len(arg))
+			if tmp > score && (tmp > 0.1 || strings.Contains(arg, title)) {
 				link, exists = sel.Attr("href")
 				score = tmp
 			}
