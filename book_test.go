@@ -35,6 +35,10 @@ func TestName(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/1070294",
 			"ارتباط رو در رو: کلید موفقیت برای مدیریت موثر و کارا مجموعه مقالاتی از دانشگاه هاروارد...",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/3553118",
+			"دریدا و فلسفه",
+		},
 	}
 
 	for i, test := range tests {

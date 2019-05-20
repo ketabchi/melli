@@ -61,7 +61,8 @@ func (b *Book) Name() (name string) {
 
 func (b *Book) nameFromField(text string) string {
 	splited := strings.Split(text, "/")
-	name := util.Clean(splited[0])
+	name := strings.Replace(splited[0], "[کتاب]", "", 1)
+	name = util.Clean(name)
 
 	return name
 }
