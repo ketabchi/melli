@@ -47,7 +47,7 @@ func TestGetBookURLByISBN(t *testing.T) {
 				i, test.isbn, err)
 		}
 		if url != test.exp {
-			t.Errorf("Test %d: Expected %s but got %s for %s usbn.",
+			t.Errorf("Test %d: Expected %s but got %s for %s isbn.",
 				i, test.exp, url, test.isbn)
 		}
 	}

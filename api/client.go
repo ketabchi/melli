@@ -28,8 +28,8 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 		doc.Find("#td2 > a").Each(func(i int, sel *goquery.Selection) {
 			title := util.Clean(sel.Text())
 			tmp := matchr.SmithWaterman(arg, title)
-			tmp /= float64(len(arg))
-			if tmp > score && (tmp > 0.1 || strings.Contains(arg, title)) {
+			tmp /= float64(len([]rune(arg)))
+			if tmp > score && (tmp > 0.2 || strings.Contains(arg, title)) {
 				link, exists = sel.Attr("href")
 				score = tmp
 			}

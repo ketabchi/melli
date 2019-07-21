@@ -81,8 +81,8 @@ func (b *Book) Publisher() (publisher string) {
 }
 
 func (b *Book) publisherFromField(text string) string {
-	text = strings.Replace(text, "٬", "،", -1)
-	text = strings.Replace(text, "؛", "،", -1)
+	text = strings.ReplaceAll(text, "٬", "،")
+	text = strings.ReplaceAll(text, "؛", "،")
 	text = cleanDoubleColonRe.ReplaceAllString(text, ":")
 	splited := strings.Split(text, ":")
 	if len(splited) < 2 {
@@ -118,8 +118,8 @@ func (b *Book) Author() (faName string, enName string) {
 }
 
 func (b *Book) authorFromField(text string) string {
-	text = strings.Replace(text, "٬", "،", -1)
-	text = strings.Replace(text, "؛", "،", -1)
+	text = strings.ReplaceAll(text, "٬", "،")
+	text = strings.ReplaceAll(text, "؛", "،")
 	splited := strings.Split(text, "،")
 
 	return b.authorFullName(splited)
@@ -150,12 +150,12 @@ func (b *Book) OriginalName() (name string) {
 				return true
 			}
 
-			text = strings.Replace(text, "عنوان اصلی:", "", -1)
+			text = strings.ReplaceAll(text, "عنوان اصلی:", "")
 			text = util.Clean(text)
-			text = strings.Replace(text, "\u202d", "", -1)
-			text = strings.Replace(text, "\u200e", "", -1)
+			text = strings.ReplaceAll(text, "\u202d", "")
+			text = strings.ReplaceAll(text, "\u200e", "")
 			text = cleanPubDateRe.ReplaceAllString(text, "")
-			text = strings.Replace(text, ",", "", -1)
+			text = strings.ReplaceAll(text, ",", "")
 
 			name = strings.Trim(text, ".[] ")
 
@@ -194,9 +194,9 @@ func (b *Book) translatorsFromField(text string) []string {
 		return translators
 	}
 
-	text = strings.Replace(ss[1], " و ", "،", -1)
-	text = strings.Replace(text, "٬", "،", -1)
-	text = strings.Replace(text, "؛", "،", -1)
+	text = strings.ReplaceAll(ss[1], " و ", "،")
+	text = strings.ReplaceAll(text, "٬", "،")
+	text = strings.ReplaceAll(text, "؛", "،")
 
 	ss = strings.Split(text, "،")
 
@@ -208,4 +208,23 @@ func (b *Book) translatorsFromField(text string) []string {
 	}
 
 	return translators
+}
+
+func (b *Book) ISBN() (isbn string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏‏شابک" {
+			text := sel.Next().Next().Text()
+			isbn = b.isbnFromField(text)
+			return false
+		}
+		return true
+	})
+
+	return
+}
+
+func (b *Book) isbnFromField(text string) string {
+	// TODO: needs more parsing text, fails on:
+	// http://opac.nlai.ir/opac-prod/bibliographic/2072242
+	return strings.ReplaceAll(text, "-", "")
 }
