@@ -311,10 +311,6 @@ func TestTranslator(t *testing.T) {
 			[]string{"امیرحسین میرزائیان", "عبدالرضا شهبازی"},
 		},
 		{
-			"http://opac.nlai.ir/opac-prod/bibliographic/5187277",
-			[]string{"آذر متين", "نيلوفر اعظمی"},
-		},
-		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4427806",
 			[]string{"محمدعلی جعفری"},
 		},
@@ -385,6 +381,10 @@ func TestTranslator(t *testing.T) {
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/2900920",
 			[]string{"مجتبی مقصودی", "الهه علوی", "مسعود جوادیان"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/760159",
+			[]string{"نجف دریابندری"},
 		},
 	}
 

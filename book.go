@@ -187,6 +187,7 @@ func (b *Book) Translators() []string {
 func (b *Book) translatorsFromField(text string) []string {
 	ss := strings.Split(text, "/")
 	text = ss[len(ss)-1]
+	text = util.Clean(text)
 
 	translators := make([]string, 0)
 	ss = translatorRe.FindStringSubmatch(text)
