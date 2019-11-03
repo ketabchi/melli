@@ -138,6 +138,7 @@ func (b *Book) authorFullName(splited []string) string {
 	fn := util.Clean(splited[1])
 	ln := util.Clean(splited[0])
 	name := fmt.Sprintf("%s %s", fn, ln)
+	name = strings.TrimSpace(name)
 
 	return name
 }
