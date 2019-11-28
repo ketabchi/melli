@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 
@@ -14,7 +13,7 @@ import (
 	"github.com/ketabchi/util"
 )
 
-var client = &http.Client{Timeout: time.Second * 20}
+var client = &http.Client{Timeout: time.Second * 40}
 
 func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	searchURL := fmt.Sprintf("http://opac.nlai.ir/opac-prod/search/bibliographicSimpleSearchProcess.do?simpleSearch.value=%s&bibliographicLimitQueryBuilder.biblioDocType=BF&simpleSearch.indexFieldId=221091&command=I&simpleSearch.tokenized=true&classType=0", isbn)
@@ -77,7 +76,7 @@ func useProxy() {
 }
 
 func init() {
-	if os.Getenv("NODE_ENV") == "production" {
-		useProxy()
-	}
+	// if os.Getenv("NODE_ENV") == "production" {
+	useProxy()
+	// }
 }
