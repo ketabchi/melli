@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -56,27 +55,4 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	} else {
 		return fmt.Sprintf("http://opac.nlai.ir/opac-prod/bibliographic/%s", id[0]), nil
 	}
-}
-
-func useProxy() {
-	for i := 0; i < 5; i++ {
-		u, err := util.GetProxy()
-		if err != nil {
-			log.Fatalf("Error on getting proxy: %s", err)
-		}
-
-		client.Transport = &http.Transport{Proxy: http.ProxyURL(u)}
-
-		res, err := client.Get("http://opac.nlai.ir/opac-prod/index.jsp")
-		if err == nil && res.StatusCode == 200 {
-			break
-		}
-	}
-
-}
-
-func init() {
-	// if os.Getenv("NODE_ENV") == "production" {
-	useProxy()
-	// }
 }
