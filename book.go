@@ -230,3 +230,7 @@ func (b *Book) isbnFromField(text string) string {
 	// http://opac.nlai.ir/opac-prod/bibliographic/2072242
 	return strings.ReplaceAll(text, "-", "")
 }
+
+func (b *Book) Link() string {
+	return b.url
+}
