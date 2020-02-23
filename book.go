@@ -21,6 +21,7 @@ var (
 	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
 	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
 	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
+	serieRe            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
 
 	NoBookErr = errors.New("no book with this isbn")
 )
@@ -233,4 +234,37 @@ func (b *Book) isbnFromField(text string) string {
 
 func (b *Book) Link() string {
 	return b.url
+}
+
+func (b *Book) Series() (ss []string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == "‏فروست" {
+			text := sel.Next().Next().Text()
+			ss = b.seriesFromField(text)
+			return false
+		}
+		return true
+	})
+
+	return
+}
+
+func (b *Book) seriesFromField(text string) []string {
+	series := make([]string, 0)
+
+	ss := serieRe.FindAllString(text, -1)
+	if len(ss) == 0 {
+		ss = append(ss, text)
+	}
+	for _, s := range ss {
+		ss2 := strings.Split(s, "؛")
+		s = ss2[0]
+		s = strings.TrimSpace(s)
+		s = strings.Replace(s, "\n", " ", -1)
+		s = util.Clean(s)
+
+		series = append(series, strings.TrimSuffix(s, "."))
+	}
+
+	return series
 }

@@ -400,3 +400,47 @@ func TestTranslator(t *testing.T) {
 		}
 	}
 }
+
+func TestSerie(t *testing.T) {
+	tests := []struct {
+		url string
+		exp []string
+	}{
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5438339",
+			[]string{},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4914535",
+			[]string{"پرسی جکسون"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4573407",
+			[]string{"رمان نوجوان", "قهرمانان المپ"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/2854139",
+			[]string{"پرسی جکسون و فرمانروایان آلپ"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/2893901",
+			[]string{"سی و نه سرنخ", "مجموعه کارآگاهی نشر ویدا"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
+			[]string{"کتاب‌های دامیز٬ کاربردی و سودمند"},
+		},
+	}
+
+	for i, test := range tests {
+		book, err := NewBook(test.url)
+		if err != nil {
+			t.Errorf("Test %d: Error on creating book from %s: %s",
+				i, test.url, err)
+		}
+		if series := book.Series(); !util.CheckSliceEq(series, test.exp) {
+			t.Errorf("Test %d: Expected series %q, but got %q",
+				i, test.exp, series)
+		}
+	}
+}
