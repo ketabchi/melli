@@ -100,7 +100,8 @@ func (b *Book) publisherFromField(text string) string {
 	return name
 }
 
-func (b *Book) Author() (faName string, enName string) {
+func (b *Book) Authors() [][]string {
+	authors, faName, enName := make([][]string, 0), "", ""
 	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
 		if sel.Text() == "‏سرشناسه" {
 			text := sel.Next().Next().Text()
@@ -110,6 +111,10 @@ func (b *Book) Author() (faName string, enName string) {
 			if len(splited) > 1 {
 				enName = b.authorEnFromField(splited[1])
 			}
+			if faName != "" && enName != "" {
+				authors = append(authors, []string{faName, enName})
+			}
+
 			return false
 		}
 		return true
