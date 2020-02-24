@@ -186,7 +186,8 @@ func TestAuthor(t *testing.T) {
 				i, test.url, err)
 		}
 
-		faName, enName := book.Author()
+		author := book.Authors()[0]
+		faName, enName := author[0], author[1]
 		if faName != test.faName {
 			t.Logf("\n%q\n%q", test.faName, faName)
 			t.Errorf("Test %d: Expected author faName '%s', but got '%s'",

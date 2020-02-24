@@ -111,7 +111,7 @@ func (b *Book) Authors() [][]string {
 			if len(splited) > 1 {
 				enName = b.authorEnFromField(splited[1])
 			}
-			if faName != "" && enName != "" {
+			if faName != "" || enName != "" {
 				authors = append(authors, []string{faName, enName})
 			}
 
@@ -120,7 +120,7 @@ func (b *Book) Authors() [][]string {
 		return true
 	})
 
-	return
+	return authors
 }
 
 func (b *Book) authorFromField(text string) string {
