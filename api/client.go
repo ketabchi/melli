@@ -11,11 +11,16 @@ import (
 	sutil "github.com/ketabchi/util"
 )
 
-var client = &http.Client{}
+var Client = &http.Client{}
 
 func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	searchURL := fmt.Sprintf("http://opac.nlai.ir/opac-prod/search/bibliographicSimpleSearchProcess.do?simpleSearch.value=%s&bibliographicLimitQueryBuilder.biblioDocType=BF&simpleSearch.indexFieldId=221091&command=I&simpleSearch.tokenized=true&classType=0", isbn)
-	doc, err := goquery.NewDocument(searchURL)
+	res, err := Client.Get(searchURL)
+	if err != nil {
+		return "", err
+	}
+
+	doc, err := goquery.NewDocumentFromResponse(res)
 	if err != nil {
 		return "", err
 	}
@@ -54,8 +59,4 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	} else {
 		return fmt.Sprintf("http://opac.nlai.ir/opac-prod/bibliographic/%s", id[0]), nil
 	}
-}
-
-func SetClient(c *http.Client) {
-	client = c
 }

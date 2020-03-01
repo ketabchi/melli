@@ -11,7 +11,7 @@ func TestGetBookURLByISBN(t *testing.T) {
 		{
 			"9789646235793",
 			[]string{},
-			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
+			"http://opac.nlai.ir/opac-prod/bibliographic/5800683",
 		},
 		{
 			"9786008237631",
