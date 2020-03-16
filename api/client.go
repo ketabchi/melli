@@ -8,7 +8,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/antzucaro/matchr"
-	sutil "github.com/ketabchi/util"
+	"github.com/ketabchi/util"
 )
 
 var Client = &http.Client{}
@@ -29,9 +29,9 @@ func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	if len(args) > 0 {
 		score := 0.0
 		exists = false
-		arg := sutil.Clean(args[0])
+		arg := util.Clean(args[0])
 		doc.Find("#td2 > a").Each(func(i int, sel *goquery.Selection) {
-			title := sutil.Clean(sel.Text())
+			title := util.Clean(sel.Text())
 			tmp := matchr.SmithWaterman(arg, title)
 			tmp /= float64(len([]rune(arg)))
 			if tmp > score && (tmp > 0.2 || strings.Contains(arg, title)) {
