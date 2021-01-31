@@ -39,7 +39,12 @@ func NewBookByISBN(isbn string, args ...string) (*Book, error) {
 }
 
 func NewBook(url string) (*Book, error) {
-	doc, err := goquery.NewDocument(url)
+	res, err := api.Client.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	doc, err := goquery.NewDocumentFromResponse(res)
 	if err != nil {
 		return nil, err
 	}
