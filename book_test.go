@@ -386,6 +386,18 @@ func TestTranslator(t *testing.T) {
 			"http://opac.nlai.ir/opac-prod/bibliographic/760159",
 			[]string{"نجف دریابندری"},
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/6239468",
+			[]string{"انشاء\u200cالله رحمتی"},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/4165246",
+			[]string{},
+		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/1127515",
+			[]string{"محمدعلی فروغی"},
+		},
 	}
 
 	for i, test := range tests {

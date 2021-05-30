@@ -18,7 +18,7 @@ type Book struct {
 }
 
 var (
-	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
+	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
 	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
 	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
 	serieRe            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
@@ -210,7 +210,7 @@ func (b *Book) translatorsFromField(text string) []string {
 
 	for _, s := range ss {
 		s = util.Clean(s)
-		if len(s) != 0 {
+		if len(s) != 0 && !strings.Contains(s, "[") && !strings.Contains(s, "]") {
 			translators = append(translators, s)
 		}
 	}
