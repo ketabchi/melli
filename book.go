@@ -18,7 +18,7 @@ type Book struct {
 }
 
 var (
-	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی‌سازی|ترانه‌سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
+	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی\x{200c}سازی|ترانه\x{200c}سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
 	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
 	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
 	serieRe            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
@@ -53,16 +53,11 @@ func NewBook(url string) (*Book, error) {
 }
 
 func (b *Book) Name() (name string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏عنوان و نام پديدآور" {
-			text := sel.Next().Next().Text()
-			name = b.nameFromField(text)
-			return false
-		}
-		return true
-	})
+	if text := b.getField("\u200fعنوان و نام پديدآور"); text != "" {
+		return b.nameFromField(text)
+	}
 
-	return
+	return ""
 }
 
 func (b *Book) nameFromField(text string) string {
@@ -74,16 +69,11 @@ func (b *Book) nameFromField(text string) string {
 }
 
 func (b *Book) Publisher() (publisher string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏مشخصات نشر" {
-			text := sel.Next().Next().Text()
-			publisher = b.publisherFromField(text)
-			return false
-		}
-		return true
-	})
+	if text := b.getField("\u200fمشخصات نشر"); text != "" {
+		return b.publisherFromField(text)
+	}
 
-	return
+	return ""
 }
 
 func (b *Book) publisherFromField(text string) string {
@@ -106,19 +96,14 @@ func (b *Book) publisherFromField(text string) string {
 }
 
 func (b *Book) Author() (faName string, enName string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏سرشناسه" {
-			text := sel.Next().Next().Text()
-			splited := strings.Split(text, "\n")
+	if text := b.getField("\u200fسرشناسه"); text != "" {
+		splited := strings.Split(text, "\n")
 
-			faName = b.authorFromField(splited[0])
-			if len(splited) > 1 {
-				enName = b.authorEnFromField(splited[1])
-			}
-			return false
+		faName = b.authorFromField(splited[0])
+		if len(splited) > 1 {
+			enName = b.authorEnFromField(splited[1])
 		}
-		return true
-	})
+	}
 
 	return
 }
@@ -150,42 +135,30 @@ func (b *Book) authorFullName(splited []string) string {
 }
 
 func (b *Book) OriginalName() (name string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏يادداشت" {
-			text := sel.Next().Next().Text()
-			if !strings.Contains(text, "عنوان اصلی:") {
-				return true
-			}
-
-			text = strings.ReplaceAll(text, "عنوان اصلی:", "")
-			text = util.Clean(text)
-			text = strings.ReplaceAll(text, "\u202d", "")
-			text = strings.ReplaceAll(text, "\u200e", "")
-			text = cleanPubDateRe.ReplaceAllString(text, "")
-			text = strings.ReplaceAll(text, ",", "")
-
-			name = strings.Trim(text, ".[] ")
-
-			return false
+	if text := b.getField("\u200fيادداشت"); text != "" {
+		if !strings.Contains(text, "عنوان اصلی:") {
+			return ""
 		}
-		return true
-	})
+
+		text = strings.ReplaceAll(text, "عنوان اصلی:", "")
+		text = util.Clean(text)
+		text = strings.ReplaceAll(text, "\u202d", "")
+		text = strings.ReplaceAll(text, "\u200e", "")
+		text = cleanPubDateRe.ReplaceAllString(text, "")
+		text = strings.ReplaceAll(text, ",", "")
+
+		name = strings.Trim(text, ".[] ")
+	}
 
 	return
 }
 
 func (b *Book) Translators() []string {
-	translators := make([]string, 0)
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏عنوان و نام پديدآور" {
-			text := sel.Next().Next().Text()
-			translators = b.translatorsFromField(text)
-			return false
-		}
-		return true
-	})
+	if text := b.getField("\u200fعنوان و نام پديدآور"); text != "" {
+		return b.translatorsFromField(text)
+	}
 
-	return translators
+	return []string{}
 }
 
 // TODO: samples we can't currently parse:
@@ -219,16 +192,11 @@ func (b *Book) translatorsFromField(text string) []string {
 }
 
 func (b *Book) ISBN() (isbn string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏‏شابک" {
-			text := sel.Next().Next().Text()
-			isbn = b.isbnFromField(text)
-			return false
-		}
-		return true
-	})
+	if text := b.getField("\u200f‏شابک"); text != "" {
+		return b.isbnFromField(text)
+	}
 
-	return
+	return ""
 }
 
 func (b *Book) isbnFromField(text string) string {
@@ -242,16 +210,11 @@ func (b *Book) Link() string {
 }
 
 func (b *Book) Series() (ss []string) {
-	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
-		if sel.Text() == "‏فروست" {
-			text := sel.Next().Next().Text()
-			ss = b.seriesFromField(text)
-			return false
-		}
-		return true
-	})
+	if text := b.getField("\u200fفروست"); text != "" {
+		return b.seriesFromField(text)
+	}
 
-	return
+	return []string{}
 }
 
 func (b *Book) seriesFromField(text string) []string {
@@ -272,4 +235,16 @@ func (b *Book) seriesFromField(text string) []string {
 	}
 
 	return series
+}
+
+func (b *Book) getField(key string) (ret string) {
+	b.doc.Find("td").EachWithBreak(func(i int, sel *goquery.Selection) bool {
+		if sel.Text() == key {
+			ret = sel.Next().Next().Text()
+			return false
+		}
+		return true
+	})
+
+	return
 }
