@@ -17,7 +17,7 @@ func TestName(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3399286",
-			"شغل مناسب شما: با توجه به ویژگی‌های شخصیتی خود کارتان را انتخاب کنید...",
+			"شغل مناسب شما: با توجه به ویژگی\u200cهای شخصیتی خود کارتان را انتخاب کنید...",
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
@@ -29,7 +29,7 @@ func TestName(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3049599",
-			"طلبه زیستن: پژوهشی مقدماتی در سنخ‌شناسی جامعه‌شناختی زیست‌طلبگی",
+			"طلبه زیستن: پژوهشی مقدماتی در سنخ\u200cشناسی جامعه\u200cشناختی زیست\u200cطلبگی",
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/1070294",
@@ -118,7 +118,7 @@ func TestPublisher(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3766613",
-			"پینه‌دوز",
+			"پینه\u200cدوز",
 		},
 	}
 
@@ -154,7 +154,7 @@ func TestAuthor(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3649724",
-			"عفت‌السادات مرقاتی خویی",
+			"عفت\u200cالسادات مرقاتی خویی",
 			"",
 		},
 		{
@@ -164,7 +164,7 @@ func TestAuthor(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3735689",
-			"زین‌الدین‌بن علی شهیدثانی",
+			"زین\u200cالدین\u200cبن علی شهیدثانی",
 			"",
 		},
 		{
@@ -273,7 +273,7 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3125961",
-			[]string{"محمدرضا طبیب‌زاده"},
+			[]string{"محمدرضا طبیب\u200cزاده"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5174229",
@@ -281,7 +281,7 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4315430",
-			[]string{"محمد عباس‌آبادی"},
+			[]string{"محمد عباس\u200cآبادی"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3608346",
@@ -301,7 +301,7 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3973224",
-			[]string{"عادل فردوسی‌پور", "بهزاد توکلی", "علی شهروز"},
+			[]string{"عادل فردوسی\u200cپور", "بهزاد توکلی", "علی شهروز"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/3393537",
@@ -329,7 +329,7 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/1557799",
-			[]string{"بهرام قاسمی‌نژاد"},
+			[]string{"بهرام قاسمی\u200cنژاد"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5293382",
@@ -349,7 +349,7 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4788927",
-			[]string{"سارا طاهری", "علیرضا کوشکی‌جهرمی"},
+			[]string{"سارا طاهری", "علیرضا کوشکی\u200cجهرمی"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4235490",
@@ -365,11 +365,11 @@ func TestTranslator(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4912007",
-			[]string{"لیلا کاشانی‌وحید"},
+			[]string{"لیلا کاشانی\u200cوحید"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/4912007",
-			[]string{"لیلا کاشانی‌وحید"},
+			[]string{"لیلا کاشانی\u200cوحید"},
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/1983690",
@@ -445,7 +445,7 @@ func TestSerie(t *testing.T) {
 		},
 		{
 			"http://opac.nlai.ir/opac-prod/bibliographic/5030326",
-			[]string{"کتاب‌های دامیز٬ کاربردی و سودمند"},
+			[]string{"کتاب\u200cهای دامیز٬ کاربردی و سودمند"},
 		},
 	}
 

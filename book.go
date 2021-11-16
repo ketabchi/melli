@@ -18,10 +18,10 @@ type Book struct {
 }
 
 var (
-	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی\x{200c}سازی|ترانه\x{200c}سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق|شرح)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
-	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
-	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
-	serieRe            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
+	reTranslators      = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی\x{200c}سازی|ترانه\x{200c}سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق|شرح)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
+	reCleanPubDate     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
+	reCleanDoubleColon = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
+	reSerie            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
 	reNumber           = regexp.MustCompile(`[0-9۰-۹]`)
 
 	ErrNoBook = errors.New("no book with this isbn")
@@ -80,7 +80,7 @@ func (b *Book) Publisher() (publisher string) {
 func (b *Book) publisherFromField(text string) string {
 	text = strings.ReplaceAll(text, "٬", "،")
 	text = strings.ReplaceAll(text, "؛", "،")
-	text = cleanDoubleColonRe.ReplaceAllString(text, ":")
+	text = reCleanDoubleColon.ReplaceAllString(text, ":")
 	splited := strings.Split(text, ":")
 	if len(splited) < 2 {
 		return ""
@@ -154,7 +154,7 @@ func (b *Book) OriginalName() (name string) {
 		text = util.Clean(text)
 		text = strings.ReplaceAll(text, "\u202d", "")
 		text = strings.ReplaceAll(text, "\u200e", "")
-		text = cleanPubDateRe.ReplaceAllString(text, "")
+		text = reCleanPubDate.ReplaceAllString(text, "")
 		text = strings.ReplaceAll(text, ",", "")
 
 		name = strings.Trim(text, ".[] ")
@@ -182,7 +182,7 @@ func (b *Book) translatorsFromField(text string) []string {
 	text = util.Clean(text)
 
 	translators := make([]string, 0)
-	ss = translatorRe.FindStringSubmatch(text)
+	ss = reTranslators.FindStringSubmatch(text)
 	if len(ss) < 2 {
 		return translators
 	}
@@ -232,7 +232,7 @@ func (b *Book) Series() (ss []string) {
 func (b *Book) seriesFromField(text string) []string {
 	series := make([]string, 0)
 
-	ss := serieRe.FindAllString(text, -1)
+	ss := reSerie.FindAllString(text, -1)
 	if len(ss) == 0 {
 		ss = append(ss, text)
 	}
