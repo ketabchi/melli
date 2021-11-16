@@ -18,10 +18,11 @@ type Book struct {
 }
 
 var (
-	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی\x{200c}سازی|ترانه\x{200c}سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
+	translatorRe       = regexp.MustCompile(`(?:(?:[\[\(])?(?:\s)?(?:ترجمه(?:(?:\x{200c})+ی)?|مترجم(?:ان|ین)?)(?: \[?و (?:[\[\(])?(?:تنظیم|گردآوری|گردآورنده|سرپرستی|تدوین|تالیف|انطباق فرهنگی|ویرایش|بومی\x{200c}سازی|ترانه\x{200c}سرا|ترانه سرا|شعرهای|انتخاب|نگارش|ویراستار|بازآفرینی|بررسی|تحقیق|شرح)(?:[\]\)])?)?(?:\s)?(?:[\]\)])?)(.+?)(?:؛|\.|\]|$)`)
 	cleanPubDateRe     = regexp.MustCompile(`(\[.*\]|[,.]\s?c?\[?\d{4}\]?.?$)`)
 	cleanDoubleColonRe = regexp.MustCompile(`:[\s\x{200f}\x{202b}]+:`)
 	serieRe            = regexp.MustCompile(`[^\.]+؛[۰-۹\s]+`)
+	reNumber           = regexp.MustCompile(`[0-9۰-۹]`)
 
 	ErrNoBook = errors.New("no book with this isbn")
 )
@@ -126,8 +127,17 @@ func (b *Book) authorFullName(splited []string) string {
 	if len(splited) < 2 {
 		return ""
 	}
+
 	fn := util.Clean(splited[1])
+	if reNumber.MatchString(fn) {
+		fn = ""
+	}
+
 	ln := util.Clean(splited[0])
+	if reNumber.MatchString(ln) {
+		ln = ""
+	}
+
 	name := fmt.Sprintf("%s %s", fn, ln)
 	name = strings.TrimSpace(name)
 
@@ -164,6 +174,8 @@ func (b *Book) Translators() []string {
 // TODO: samples we can't currently parse:
 // http://opac.nlai.ir/opac-prod/bibliographic/3015099
 // http://opac.nlai.ir/opac-prod/bibliographic/4312607
+// http://opac.nlai.ir/opac-prod/bibliographic/4758204
+// http://opac.nlai.ir/opac-prod/bibliographic/1595981
 func (b *Book) translatorsFromField(text string) []string {
 	ss := strings.Split(text, "/")
 	text = ss[len(ss)-1]

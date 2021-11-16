@@ -177,6 +177,11 @@ func TestAuthor(t *testing.T) {
 			"برایان تریسی",
 			"Brian Tracy",
 		},
+		{
+			"http://opac.nlai.ir/opac-prod/bibliographic/7356042",
+			"ملکم",
+			"",
+		},
 	}
 
 	for i, test := range tests {
