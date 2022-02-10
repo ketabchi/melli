@@ -11,11 +11,9 @@ import (
 	"github.com/ketabchi/util"
 )
 
-var Client = &http.Client{}
-
 func GetBookURLByISBN(isbn string, args ...string) (string, error) {
 	searchURL := fmt.Sprintf("http://opac.nlai.ir/opac-prod/search/bibliographicSimpleSearchProcess.do?simpleSearch.value=%s&bibliographicLimitQueryBuilder.biblioDocType=BF&simpleSearch.indexFieldId=221091&command=I&simpleSearch.tokenized=true&classType=0", isbn)
-	res, err := Client.Get(searchURL)
+	res, err := http.Get(searchURL)
 	if err != nil {
 		return "", err
 	}

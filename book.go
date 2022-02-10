@@ -3,6 +3,7 @@ package melli
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -40,7 +41,7 @@ func NewBookByISBN(isbn string, args ...string) (*Book, error) {
 }
 
 func NewBook(url string) (*Book, error) {
-	res, err := api.Client.Get(url)
+	res, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
