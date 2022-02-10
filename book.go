@@ -240,7 +240,7 @@ func (b *Book) seriesFromField(text string) []string {
 		ss2 := strings.Split(s, "؛")
 		s = ss2[0]
 		s = strings.TrimSpace(s)
-		s = strings.Replace(s, "\n", " ", -1)
+		s = strings.ReplaceAll(s, "\n", " ")
 		s = util.Clean(s)
 
 		series = append(series, strings.TrimSuffix(s, "."))
